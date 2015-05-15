@@ -1,0 +1,55 @@
+package org.jee.ssm.cms.shiro;
+
+import java.util.HashSet;
+import java.util.Set;
+
+import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authc.AuthenticationInfo;
+import org.apache.shiro.authc.AuthenticationToken;
+import org.apache.shiro.authc.LockedAccountException;
+import org.apache.shiro.authc.SimpleAuthenticationInfo;
+import org.apache.shiro.authc.UnknownAccountException;
+import org.apache.shiro.authz.AuthorizationInfo;
+import org.apache.shiro.authz.SimpleAuthorizationInfo;
+import org.apache.shiro.realm.AuthorizingRealm;
+import org.apache.shiro.subject.PrincipalCollection;
+import org.apache.shiro.util.ByteSource;
+
+public class UserRealm extends AuthorizingRealm {
+
+	@Override
+	protected AuthorizationInfo doGetAuthorizationInfo(
+			PrincipalCollection principals) {
+		// TODO Auto-generated method stub
+		System.out.println("--授权--");
+		String username = (String)principals.getPrimaryPrincipal();
+		SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo(); 
+		
+		Set<String> roles = new HashSet<String>();
+		roles.add("admin");
+		roles.add("manage");
+		authorizationInfo.setRoles(roles);
+		Set<String> pers = new HashSet<String>();
+		pers.add("all");
+        authorizationInfo.setStringPermissions(pers);
+		return authorizationInfo;
+	}
+
+	@Override
+	protected AuthenticationInfo doGetAuthenticationInfo(
+			AuthenticationToken token) throws AuthenticationException {
+		System.out.println("--认证--");
+		// TODO Auto-generated method stub
+		String username = (String)token.getPrincipal();
+		
+		if(username == null || "".equals(username)){
+			throw new UnknownAccountException();
+		}
+		if(username == "no"){
+			throw new LockedAccountException(); //帐号锁定
+		}
+		SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(username , "123" ,ByteSource.Util.bytes("xxxxx") , getName());
+		return info;
+	}
+
+}
