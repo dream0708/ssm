@@ -11,7 +11,7 @@
 username:<input name="username" type="text" /><br>
 password:<input name="password" type="password" /><br>
 <input type="submit" value="submit" /><br>
-
+${username }
 </form>
 </body>
 </html>

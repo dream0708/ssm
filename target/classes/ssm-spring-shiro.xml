@@ -96,15 +96,14 @@
         </property>
         <property name="filterChainDefinitions">
             <value>
-                /index.jsp = authc
+                /resources/** = anon
+                /index.jsp = anon
                 /unauthorized.jsp = anon
                 /test/index = anon
-                /user/login = authc
+                /user/login = anon
                 /user/index = anon
                 /logout = logout
-                /** = user
-                /resources/** = anon
-				
+               	
             </value>
         </property>
     </bean>
