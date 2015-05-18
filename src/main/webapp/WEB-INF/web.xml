@@ -177,7 +177,7 @@
 
 	<servlet-mapping>
 		<servlet-name>Kaptcha</servlet-name>
-		<url-pattern>/kaptcha</url-pattern>
+		<url-pattern>/captcha</url-pattern>
 	</servlet-mapping>
   
 </web-app>

@@ -3,6 +3,7 @@ package org.jee.ssm.cms.shiro;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -37,10 +38,17 @@ public class UserRealm extends AuthorizingRealm {
 
 	@Override
 	protected AuthenticationInfo doGetAuthenticationInfo(
-			AuthenticationToken token) throws AuthenticationException {
+			AuthenticationToken tokens) throws AuthenticationException {
 		System.out.println("--认证--");
 		// TODO Auto-generated method stub
+		
+		UsernamePasswordCaptchaToken token = (UsernamePasswordCaptchaToken) tokens ;
 		String username = (String)token.getPrincipal();
+		String captcha = (String)token.getCaptcha();
+		String exitCode = (String)SecurityUtils.getSubject().getSession().getAttribute(com.google.code.kaptcha.Constants.KAPTCHA_SESSION_KEY);
+		if(null == captcha || exitCode == null || !exitCode.equalsIgnoreCase(captcha)){
+			throw new CaptchaException("验证码错误");
+		}
 		
 		if(username == null || "".equals(username)){
 			throw new UnknownAccountException();

@@ -23,11 +23,11 @@
     <bean id="userRealm" class="org.jee.ssm.cms.shiro.UserRealm">
        <!--  <property name="userService" ref="userService"/> -->
         <property name="credentialsMatcher" ref="credentialsMatcher"/>
-        <property name="cachingEnabled" value="true"/>
-        <property name="authenticationCachingEnabled" value="true"/>
+        <property name="cachingEnabled" value="false"/>
+        <!-- <property name="authenticationCachingEnabled" value="true"/>
         <property name="authenticationCacheName" value="authenticationCache"/>
         <property name="authorizationCachingEnabled" value="true"/>
-        <property name="authorizationCacheName" value="authorizationCache"/>
+        <property name="authorizationCacheName" value="authorizationCache"/> -->
     </bean>
 
     <!-- 会话ID生成器 -->
@@ -77,9 +77,10 @@
     </bean>
 
     <!-- 基于Form表单的身份验证过滤器 -->
-    <bean id="formAuthenticationFilter" class="org.apache.shiro.web.filter.authc.FormAuthenticationFilter">
+    <bean id="formAuthenticationFilter" class="org.jee.ssm.cms.shiro.FormAuthenticationCaptchaFilter">
         <property name="usernameParam" value="username"/>
         <property name="passwordParam" value="password"/>
+        <property name="captchaParam" value="captcha"/>
         <property name="loginUrl" value="/user/login"/>
     </bean>
 
@@ -96,14 +97,13 @@
         </property>
         <property name="filterChainDefinitions">
             <value>
-                /resources/** = anon
-                /index.jsp = anon
-                /unauthorized.jsp = anon
-                /test/index = anon
-                /user/login = anon
-                /user/index = anon
+                /resources/** = anon      <!--anon 不需要有登陆权限才可以访问的资源 -->
+                /index.jsp = anon         <!--anon 不需要有登陆权限才可以访问的资源 -->
+                /unauthorized.jsp = authc <!--authc 需要有登陆权限才可以访问的资源，如果没有就跳转到loginUrl -->
+                /test/index = authc
+                /user/login = authc
+                /user/index = authc
                 /logout = logout
-               	
             </value>
         </property>
     </bean>

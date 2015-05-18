@@ -29,7 +29,9 @@
 		<context:exclude-filter type="annotation"
 			expression="org.springframework.stereotype.Service" />
 	</context:component-scan>
-	
+	  <!-- 当在web.xml 中   DispatcherServlet使用 <url-pattern>/</url-pattern> 映射时，能映射静态资源 -->
+    <mvc:default-servlet-handler/>
+	<aop:config proxy-target-class="true"></aop:config>
 	<mvc:annotation-driven>
 		<mvc:message-converters register-defaults="true">
 			<!-- 避免IE执行AJAX时,返回JSON出现下载文件 使用 fastJson -->
