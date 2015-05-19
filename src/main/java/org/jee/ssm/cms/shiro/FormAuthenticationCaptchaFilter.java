@@ -42,9 +42,9 @@ public class FormAuthenticationCaptchaFilter extends FormAuthenticationFilter {
 		boolean rememberMe = isRememberMe(request);
 
 		String host = getHost(request);
-
+		
 		return new UsernamePasswordCaptchaToken(username,
-				password.toCharArray(), rememberMe, host, captcha);
+				password != null ? password.toCharArray() : null , rememberMe, host, captcha);
 
 	}
 

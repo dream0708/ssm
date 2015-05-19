@@ -56,10 +56,43 @@ public class UserRealm extends AuthorizingRealm {
 		if(username == "lock"){
 			throw new LockedAccountException(); //帐号锁定
 		}
-		SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(username , //username
-				"45c476317eb9073f3e33a1f9f4b84250" , // password 
-				getName());
-		return info;
+		 //交给AuthenticatingRealm使用CredentialsMatcher进行密码匹配，如果觉得人家的不好可以自定义实现
+        SimpleAuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(
+                "admin", //用户名
+                "d3c59d25033dbf980d29554025c23a75", //密码
+                ByteSource.Util.bytes("8d78869f470951332959580424d4bf4f"),//salt=username+salt
+                getName()  //realm name
+        );
+        return authenticationInfo;
 	}
+	
+	@Override
+    public void clearCachedAuthorizationInfo(PrincipalCollection principals) {
+        super.clearCachedAuthorizationInfo(principals);
+    }
+
+    @Override
+    public void clearCachedAuthenticationInfo(PrincipalCollection principals) {
+        super.clearCachedAuthenticationInfo(principals);
+    }
+
+    @Override
+    public void clearCache(PrincipalCollection principals) {
+        super.clearCache(principals);
+    }
+
+    public void clearAllCachedAuthorizationInfo() {
+        getAuthorizationCache().clear();
+    }
+
+    public void clearAllCachedAuthenticationInfo() {
+        getAuthenticationCache().clear();
+    }
+
+    public void clearAllCache() {
+        clearAllCachedAuthenticationInfo();
+        clearAllCachedAuthorizationInfo();
+    }
+
 
 }

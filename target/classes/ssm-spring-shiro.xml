@@ -1,22 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:aop="http://www.springframework.org/schema/aop"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="
        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-       http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+       http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
 
-    <!-- 缓存管理器 使用Ehcache实现 -->
-    <bean id="cacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager">
-        <property name="cacheManagerConfigFile" value="classpath:ehcache.xml"/>
+    <bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
+        <property name="securityManager" ref="securityManager"/>
     </bean>
 
-    <!-- 凭证匹配器 -->
-    <bean id="credentialsMatcher" class="org.jee.ssm.cms.shiro.RetryLimitCustomCredentialsMatcher">
+     <!-- 缓存管理器 -->
+     <bean id="springCacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager">
+        <property name="cacheManager" ref="ehcacheManager"/>
+     </bean>
+     <!--ehcache-->
+     <bean id="ehcacheManager" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
+        <property name="configLocation" value="classpath:ehcache.xml"/>
+     </bean>
+     
+     <bean id="cacheManager" class="org.jee.ssm.cms.shiro.SpringCacheManagerWrapper">
+        <property name="cacheManager" ref="springCacheManager"/>
+     </bean>
+
+     <!-- 凭证匹配器 -->
+    <bean id="credentialsMatcher" class="org.jee.ssm.cms.shiro.RetryLimitHashedCredentialsMatcher">
         <constructor-arg ref="cacheManager"/>
-        <!-- <property name="hashAlgorithmName" value="md5"/>
+        <property name="hashAlgorithmName" value="md5"/>
         <property name="hashIterations" value="2"/>
-        <property name="storedCredentialsHexEncoded" value="true"/> -->
+        <property name="storedCredentialsHexEncoded" value="true"/>
     </bean>
     
     <!-- Realm实现 -->

@@ -76,11 +76,10 @@ public class PasswordHelper {
     }
     
     public static void main(String args[]){
-    	User user = new User();
-    	user.setUsername("admin");
-    	user.setPassword("123");
+    	
     	PasswordHelper helper  = new PasswordHelper();
-    	helper.encryptPassword(user);
-    	System.out.println(user);
+    	String npd = helper.encryptPassword("123", "b429331aa3b95e710bc0f5a766b1a920");
+    	
+    	System.out.println(npd);
     }
 }

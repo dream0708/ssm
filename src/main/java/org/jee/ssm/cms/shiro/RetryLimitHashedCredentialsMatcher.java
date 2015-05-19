@@ -37,7 +37,7 @@ public class RetryLimitHashedCredentialsMatcher extends HashedCredentialsMatcher
             throw new ExcessiveAttemptsException();
         }
 
-        boolean matches = super.doCredentialsMatch(token, info);
+        boolean matches =  super.doCredentialsMatch(token, info);
         if(matches) {
             //clear retry count
             passwordRetryCache.remove(username);
