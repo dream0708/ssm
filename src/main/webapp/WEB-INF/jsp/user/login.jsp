@@ -11,6 +11,7 @@
 username:<input name="username" type="text" /><br>
 password:<input name="password" type="password" /><br>
 验证码:<input name="captcha" type="text" /><img src="<%=request.getContextPath() %>/captcha"></img> <br>
+记住我<input type="checkbox" id="rememberMe" name="rememberMe" />
 <input type="submit" value="submit" /><br>
 ${error }
 </form>

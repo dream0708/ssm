@@ -12,11 +12,11 @@
     </bean>
 
     <!-- 凭证匹配器 -->
-    <bean id="credentialsMatcher" class="org.jee.ssm.cms.shiro.RetryLimitHashedCredentialsMatcher">
+    <bean id="credentialsMatcher" class="org.jee.ssm.cms.shiro.RetryLimitCustomCredentialsMatcher">
         <constructor-arg ref="cacheManager"/>
-        <property name="hashAlgorithmName" value="md5"/>
+        <!-- <property name="hashAlgorithmName" value="md5"/>
         <property name="hashIterations" value="2"/>
-        <property name="storedCredentialsHexEncoded" value="true"/>
+        <property name="storedCredentialsHexEncoded" value="true"/> -->
     </bean>
     
     <!-- Realm实现 -->

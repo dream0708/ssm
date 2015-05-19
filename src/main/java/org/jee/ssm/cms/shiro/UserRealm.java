@@ -50,13 +50,15 @@ public class UserRealm extends AuthorizingRealm {
 			throw new CaptchaException("验证码错误");
 		}
 		
-		if(username == null || "".equals(username)){
+		if(username == null || "".equals(username) || !"admin".equals(username)){
 			throw new UnknownAccountException();
 		}
-		if(username == "no"){
+		if(username == "lock"){
 			throw new LockedAccountException(); //帐号锁定
 		}
-		SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(username , "123" ,ByteSource.Util.bytes("xxxxx") , getName());
+		SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(username , //username
+				"45c476317eb9073f3e33a1f9f4b84250" , // password 
+				getName());
 		return info;
 	}
 

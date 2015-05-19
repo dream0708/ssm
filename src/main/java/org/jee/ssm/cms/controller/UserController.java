@@ -17,11 +17,7 @@ public class UserController {
 		return "user/login";
 	}
 	
-	/*@RequestMapping("/login")
-	public String login(String username, String password, Model model){
-		model.addAttribute("username", username);
-		return "user/login";
-	}*/
+	
 	
 	@RequestMapping(value = "/login"    )
     public String showLoginForm(HttpServletRequest req, Model model) {
