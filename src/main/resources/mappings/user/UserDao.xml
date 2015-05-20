@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.jee.ssm.cms.dao.UserDao">
+   <resultMap type="org.jee.ssm.cms.model.User" id="Usesr">
+       <id column="Id" property="id" jdbcType="BIGINT"></id>
+       <id column="organization_id" property="organizationId" jdbcType="BIGINT"></id>
+       <id column="username" property="username" jdbcType="VARCHAR"></id>
+       <id column="password" property="password" jdbcType="VARCHAR"></id>
+       <id column="salt" property="salt" jdbcType="VARCHAR"></id>
+       <id column="role_ids" property="roleIds" jdbcType="VARCHAR"></id>
+       <id column="locked" property="locked" jdbcType="TINYINT"></id>
+       
+   </resultMap>
+   <select id="getUserByUsername" parameterType="string" resultType="User">
+        select * from sys_user where username=#{username}
+   </select>
+   <insert id="addUser" parameterType="User" >
+        insert into sys_user(id,organization_id,username,password,salt,role_ids,locked) values(#{id},${organizationId},#{username},#{password},#{salt},#{roleIds},#{locked})
+   </insert>
+   
+</mapper>

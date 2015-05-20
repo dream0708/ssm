@@ -102,7 +102,7 @@
     <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
         <property name="securityManager" ref="securityManager"/>
         <property name="loginUrl" value="/user/login" />
-		<property name="successUrl" value="user?login" />
+		<property name="successUrl" value="/user/center?login" />
         <property name="unauthorizedUrl" value="/test/index"/>
         <property name="filters">
             <util:map>

@@ -60,7 +60,7 @@ public class UserRealm extends AuthorizingRealm {
         SimpleAuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(
                 "admin", //用户名
                 "d3c59d25033dbf980d29554025c23a75", //密码
-                ByteSource.Util.bytes("8d78869f470951332959580424d4bf4f"),//salt=username+salt
+                ByteSource.Util.bytes("admin8d78869f470951332959580424d4bf4f"),//salt=username+salt
                 getName()  //realm name
         );
         return authenticationInfo;
