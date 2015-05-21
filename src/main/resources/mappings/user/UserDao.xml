@@ -9,13 +9,18 @@
        <id column="salt" property="salt" jdbcType="VARCHAR"></id>
        <id column="role_ids" property="roleIds" jdbcType="VARCHAR"></id>
        <id column="locked" property="locked" jdbcType="TINYINT"></id>
-       
    </resultMap>
+   
+   
+   <select id="getAllUsers" resultType="User">
+        select * from sys_user
+   </select>
+   
    <select id="getUserByUsername" parameterType="string" resultType="User">
         select * from sys_user where username=#{username}
    </select>
    <insert id="addUser" parameterType="User" >
-        insert into sys_user(id,organization_id,username,password,salt,role_ids,locked) values(#{id},${organizationId},#{username},#{password},#{salt},#{roleIds},#{locked})
+        insert into sys_user(organization_id,username,password,salt,role_ids,locked) values(${organizationId},#{username},#{password},#{salt},#{roleIds},#{locked})
    </insert>
    
 </mapper>

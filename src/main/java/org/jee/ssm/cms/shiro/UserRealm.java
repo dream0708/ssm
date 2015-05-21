@@ -3,6 +3,8 @@ package org.jee.ssm.cms.shiro;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.annotation.Resource;
+
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
@@ -15,8 +17,12 @@ import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
+import org.jee.ssm.cms.model.User;
+import org.jee.ssm.cms.service.UserService;
 
 public class UserRealm extends AuthorizingRealm {
+	
+	private UserService userService;
 
 	@Override
 	protected AuthorizationInfo doGetAuthorizationInfo(
@@ -39,28 +45,29 @@ public class UserRealm extends AuthorizingRealm {
 	@Override
 	protected AuthenticationInfo doGetAuthenticationInfo(
 			AuthenticationToken tokens) throws AuthenticationException {
-		System.out.println("--认证--");
-		// TODO Auto-generated method stub
 		
 		UsernamePasswordCaptchaToken token = (UsernamePasswordCaptchaToken) tokens ;
-		String username = (String)token.getPrincipal();
+		
 		String captcha = (String)token.getCaptcha();
 		String exitCode = (String)SecurityUtils.getSubject().getSession().getAttribute(com.google.code.kaptcha.Constants.KAPTCHA_SESSION_KEY);
 		if(null == captcha || exitCode == null || !exitCode.equalsIgnoreCase(captcha)){
 			throw new CaptchaException("验证码错误");
 		}
+		String username = (String)token.getPrincipal();
+		User user = userService.getUserByUsername(username);
 		
-		if(username == null || "".equals(username) || !"admin".equals(username)){
-			throw new UnknownAccountException();
+		if(user == null){
+			throw new UnknownAccountException(); //找不到
 		}
-		if(username == "lock"){
+		
+		if(Boolean.TRUE.equals(user.getLocked())){
 			throw new LockedAccountException(); //帐号锁定
 		}
 		 //交给AuthenticatingRealm使用CredentialsMatcher进行密码匹配，如果觉得人家的不好可以自定义实现
         SimpleAuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(
-                "admin", //用户名
-                "d3c59d25033dbf980d29554025c23a75", //密码
-                ByteSource.Util.bytes("admin8d78869f470951332959580424d4bf4f"),//salt=username+salt
+                user.getUsername(), //用户名
+                user.getPassword(), //密码
+                ByteSource.Util.bytes(user.getCredentialsSalt()),//salt=username+salt
                 getName()  //realm name
         );
         return authenticationInfo;
@@ -93,6 +100,16 @@ public class UserRealm extends AuthorizingRealm {
         clearAllCachedAuthenticationInfo();
         clearAllCachedAuthorizationInfo();
     }
+
+
+	public UserService getUserService() {
+		return userService;
+	}
+
+	@Resource
+	public void setUserService(UserService userService) {
+		this.userService = userService;
+	}
 
 
 }

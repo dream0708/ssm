@@ -24,27 +24,41 @@ public class UserController {
 	private UserService userService;
 	
 	@RequestMapping("/save")
-	public String saveUser(){
-		User user = new User();
-		user.setId(101L);
-		user.setPassword("12333336");
-		user.setUsername("test52");
-		user.setOrganizationId(1L);
-		user.setSalt("xxdege");
+	public String saveUser(User user){
+		
 		userService.addUser(user);
 		return "user/login" ;
 	}
+	
 	@RequestMapping("/list")
 	@ResponseBody
 	public User listUsers(String username){
 		User user  = userService.getUserByUsername(username);
 		return user;
 	}
-	
+	@RequestMapping("/lists")
+	@ResponseBody
+	public List<User> listAllUsers(){
+		List<User> users  = userService.getAllUsers();
+		return users;
+	}
+	/**
+	 * 分页显示
+	 * @param pageSize
+	 * @param currentPage
+	 * @return
+	 */
+	@RequestMapping("/page")
+	@ResponseBody
+	public List<User> listAllUsers(int pageSize , int currentPage){
+		List<User> users  = userService.getUsersByPage(currentPage, pageSize);
+		return users;
+	}
 	@RequestMapping(value = "/login", method = RequestMethod.GET  )
 	public String toLoginPage(){
 		return "user/login";
 	}
+	
 	@RequestMapping(value = "/center" )
     public String loginSuccess(HttpServletRequest req, Model model) {
 		String username = (String)SecurityUtils.getSubject().getPrincipal();
@@ -53,7 +67,12 @@ public class UserController {
     }
 
 	
-	
+	/**
+	 * 登陆过滤器action
+	 * @param req
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping(value = "/login", method = RequestMethod.POST  )
     public ModelAndView showLoginForm(HttpServletRequest req, Model model) {
 		ModelAndView mv = new ModelAndView("user/login");
