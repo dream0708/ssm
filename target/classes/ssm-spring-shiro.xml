@@ -18,7 +18,7 @@
      </bean>
      <!--ehcache-->
      <bean id="ehcacheManager" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
-        <property name="configLocation" value="classpath:ehcache.xml"/>
+        <property name="configLocation" value="classpath:/cache/shiro-ehcache.xml"/>
      </bean>
      
      <bean id="cacheManager" class="org.jee.ssm.cms.shiro.SpringCacheManagerWrapper">

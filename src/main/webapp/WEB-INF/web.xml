@@ -3,10 +3,27 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
 	http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
-  <display-name>ssm</display-name>
-    <welcome-file-list>
+	<display-name>ssm</display-name>
+	<welcome-file-list>
 		<welcome-file>index.jsp</welcome-file>
 	</welcome-file-list>
+
+	<login-config>
+		<!-- Authorization setting for SSL -->
+		<auth-method>CLIENT-CERT</auth-method>
+		<realm-name>Client Cert Users-only Area</realm-name>
+	</login-config>
+	<security-constraint>
+		<!-- Authorization setting for SSL -->
+		<web-resource-collection>
+			<web-resource-name>SSL</web-resource-name>
+			<url-pattern>/user/*</url-pattern>
+		</web-resource-collection>
+		<user-data-constraint>
+			<transport-guarantee>CONFIDENTIAL</transport-guarantee>
+		</user-data-constraint>
+	</security-constraint>
+
 	<!-- 加载所有的配置文件 -->
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
@@ -17,11 +34,8 @@
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
-	<!-- 自定义监听器 
-	<listener>
-		<listener-class>org.jee.ssh.cms.listener.InitApplication</listener-class>
-	</listener>
-    -->
+	<!-- 自定义监听器 <listener> <listener-class>org.jee.ssh.cms.listener.InitApplication</listener-class> 
+		</listener> -->
 	<!-- 配置SpringMVC -->
 	<servlet>
 		<servlet-name>springMVC</servlet-name>
@@ -50,7 +64,7 @@
 		<filter-name>shiroFilter</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
-	
+
 	<!-- rest -->
 	<servlet>
 		<servlet-name>restService</servlet-name>
@@ -77,7 +91,7 @@
 		<filter-name>encodingFilter</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
-	
+
 	<!-- DruidStatView -->
 	<servlet>
 		<servlet-name>DruidStatView</servlet-name>
@@ -91,28 +105,12 @@
 		<servlet-name>DruidStatView</servlet-name>
 		<url-pattern>/druid/*</url-pattern>
 	</servlet-mapping>
-	<!-- 配置Session
-	<filter>
-		<filter-name>openSession</filter-name>
-		<filter-class>org.springframework.orm.hibernate4.support.OpenSessionInViewFilter</filter-class>
-		<init-param>
-			<param-name>sessionFactoryBeanName</param-name>
-			<param-value>sessionFactory</param-value>
-		</init-param>
-		<init-param>
-			<param-name>singleSession</param-name>
-			<param-value>true</param-value>
-		</init-param>
-		<init-param>
-			<param-name>flushMode</param-name>
-			<param-value>AUTO</param-value>
-		</init-param>
-	</filter>
-	<filter-mapping>
-		<filter-name>openSession</filter-name>
-		<url-pattern>/*</url-pattern>
-	</filter-mapping>
-	-->
+	<!-- 配置Session <filter> <filter-name>openSession</filter-name> <filter-class>org.springframework.orm.hibernate4.support.OpenSessionInViewFilter</filter-class> 
+		<init-param> <param-name>sessionFactoryBeanName</param-name> <param-value>sessionFactory</param-value> 
+		</init-param> <init-param> <param-name>singleSession</param-name> <param-value>true</param-value> 
+		</init-param> <init-param> <param-name>flushMode</param-name> <param-value>AUTO</param-value> 
+		</init-param> </filter> <filter-mapping> <filter-name>openSession</filter-name> 
+		<url-pattern>/*</url-pattern> </filter-mapping> -->
 	<!-- 配置错误页面 -->
 	<error-page>
 		<error-code>403</error-code>
@@ -140,20 +138,10 @@
 		<location>/error/500.html</location>
 	</error-page>
 
-	<!-- filter 
-	<filter>
-		<filter-name>cmsFilter</filter-name>
-		<filter-class>org.jee.ssh.cms.filter.CmsFilter</filter-class>
-		<init-param>
-			<param-name>forceAction</param-name>
-			<param-value>student/register.do</param-value>
-		</init-param>
-	</filter>
-	<filter-mapping>
-		<filter-name>cmsFilter</filter-name>
-		<url-pattern>/student.jsp</url-pattern>
-	</filter-mapping>
-    -->
+	<!-- filter <filter> <filter-name>cmsFilter</filter-name> <filter-class>org.jee.ssh.cms.filter.CmsFilter</filter-class> 
+		<init-param> <param-name>forceAction</param-name> <param-value>student/register.do</param-value> 
+		</init-param> </filter> <filter-mapping> <filter-name>cmsFilter</filter-name> 
+		<url-pattern>/student.jsp</url-pattern> </filter-mapping> -->
 
 	<!-- log4j配置 -->
 	<!-- <context-param> <param-name>log4jConfigLocation</param-name> <param-value>classpath:log4j.properties</param-value> 
@@ -192,5 +180,5 @@
 		<servlet-name>Kaptcha</servlet-name>
 		<url-pattern>/captcha</url-pattern>
 	</servlet-mapping>
-  
+
 </web-app>

@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 import org.jee.ssm.cms.model.User;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Repository;
 
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
@@ -12,6 +13,7 @@ import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 public interface UserDao {
 	
 	public  List<User> getAllUsers(PageBounds pageBounds);
+	@Cacheable(value="username" , key="#username")
 	public  User getUserByUsername(@Param("username") String username);
 	public  void addUser(User user);
 

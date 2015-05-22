@@ -8,6 +8,7 @@ import org.jee.ssm.cms.dao.UserDao;
 import org.jee.ssm.cms.model.User;
 import org.jee.ssm.cms.service.UserService;
 import org.jee.ssm.cms.shiro.PasswordHelper;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import com.github.miemiedev.mybatis.paginator.domain.Order;
@@ -20,7 +21,10 @@ public class UserServiceImpl implements UserService{
 	private UserDao userDao;
 	private PasswordHelper passwordHelper;
 	@Override
+	
+	@Cacheable(value="username" , key="#username")
 	public User getUserByUsername(String username) {
+		System.out.println("---- --"+username+"---- --");
 		return userDao.getUserByUsername(username);
 	}
 
